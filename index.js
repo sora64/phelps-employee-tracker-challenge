@@ -297,7 +297,7 @@ function updateEmployeeRole() {
                     if (updatedEmployeeIdInput) {
                         return true;
                     } else {
-                        console.log('Please enter a new role!');
+                        console.log('Please enter a role ID!');
                         return false;
                     }
                 }
@@ -309,6 +309,54 @@ function updateEmployeeRole() {
             console.log('Employee role updated!');
             console.log('============================================================================='); 
             db.updateRoles(employeeId, employeeRole);
+            timerOuter();
+        });
+    }
+}
+
+function updateEmployeeManager() {
+    db.findAllEmployees();
+    console.log('=============================================================================');
+    db.findAllManagers();
+    let timeout;
+    function myTimeout() {timeout = setTimeout(updateEmployeeManagerPrompts, 800);};
+    myTimeout();
+
+    function updateEmployeeManagerPrompts() {
+        return prompt([
+            {
+                type: 'number',
+                name: 'updatedEmployeeId',
+                message: "Please input the ID of the employee whose manager you'd like to update.",
+                validate: updatedEmployeeIdInput => {
+                    if (updatedEmployeeIdInput) {
+                        return true;
+                    } else {
+                        console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'number',
+                name: 'updatedEmployeeManager',
+                message: "Please input the ID of the new manager for the selected employee.",
+                validate: updatedEmployeeIdInput => {
+                    if (updatedEmployeeIdInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter a manager ID!');
+                        return false;
+                    }
+                }
+            }
+        ]).then(res => {
+            const employeeId = res.updatedEmployeeId;
+            const employeeManager = res.updatedEmployeeManager;
+            console.log('=============================================================================');
+            console.log('Employee manager updated!');
+            console.log('============================================================================='); 
+            db.updateManager(employeeId, employeeManager);
             timerOuter();
         });
     }
