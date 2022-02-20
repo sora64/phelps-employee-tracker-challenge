@@ -362,6 +362,11 @@ function updateEmployeeManager() {
     }
 }
 
+function viewDepartments() {
+    db.findAllDepartments();
+    timerOuter();
+}
+
 function quit() {
     return prompt(
         {
