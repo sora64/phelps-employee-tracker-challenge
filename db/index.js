@@ -51,6 +51,20 @@ class DB {
         )).then(result => console.table(result[0]));
     }
 
+    findAllRoles() {
+        return connection.promise().query(
+            'SELECT id, title AS role FROM role'
+        ).then(res => console.table(res[0]));
+    }
+
+    updateRoles(id, role) {
+        return connection.promise().query(
+            'UPDATE employee SET role_id = ? WHERE id = ?', [role, id]
+        ).then(res => connection.promise().query(
+            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
+        )).then(result => console.table(result[0]));
+    }
+
     // findEmployeeByID(employeeId) {
     //     return connection.promise().query(
     //         'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id WHERE employee.id = ?', employeeId

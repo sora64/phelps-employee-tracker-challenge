@@ -157,7 +157,7 @@ function addEmployee() {
                 if (firstNameInput) {
                     return true;
                 } else {
-                    console.log('Please enter a first name!');
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
                     return false;
                 }
             }
@@ -246,7 +246,7 @@ function removeEmployee() {
                 if (removeEmployeeInput) {
                     return true;
                 } else {
-                    console.log('Invalid entry. To restart the application, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
                     return false;
                 }
             }
@@ -259,6 +259,59 @@ function removeEmployee() {
         db.deleteEmployeeRecord(removedEmployeeId);
         timerOuter();
     });
+}
+
+function viewRoles() {
+    db.findAllRoles();
+    timerOuter();
+}
+
+function updateEmployeeRole() {
+    db.findAllEmployees();
+    console.log('=============================================================================');
+    db.findAllRoles();
+    let timeout;
+    function myTimeout() {timeout = setTimeout(updateEmployeeRolePrompts, 800);};
+    myTimeout();
+
+    function updateEmployeeRolePrompts() {
+        return prompt([
+            {
+                type: 'number',
+                name: 'updatedEmployeeId',
+                message: "Please input the ID of the employee whose role you wish to update.",
+                validate: updatedEmployeeIdInput => {
+                    if (updatedEmployeeIdInput) {
+                        return true;
+                    } else {
+                        console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'number',
+                name: 'updatedEmployeeRole',
+                message: "Please input the ID of the new role for the selected employee.",
+                validate: updatedEmployeeIdInput => {
+                    if (updatedEmployeeIdInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter a new role!');
+                        return false;
+                    }
+                }
+            }
+        ]).then(res => {
+            const employeeId = res.updatedEmployeeId;
+            const employeeRole = res.updatedEmployeeRole;
+            console.log('=============================================================================');
+            console.log('Employee role updated!');
+            console.log('============================================================================='); 
+            db.updateRoles(employeeId, employeeRole);
+            timerOuter();
+        });
+    }
 }
 
 function quit() {
