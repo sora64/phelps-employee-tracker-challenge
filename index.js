@@ -25,6 +25,10 @@ function primaryPrompts() {
                     value: 'VIEW_EMPLOYEES'
                 },
                 {
+                    name: 'View Employee By ID',
+                    value: 'VIEW_EMPLOYEE_BY_ID'
+                },
+                {
                     name: 'View All Employees By Department',
                     value: 'VIEW_EMPLOYEES_BY_DEPARTMENT'
                 },
@@ -81,6 +85,9 @@ function primaryPrompts() {
             case 'VIEW_EMPLOYEES':
                 viewEmployees();
                 break;
+            case 'VIEW_EMPLOYEE_BY_ID': 
+                viewEmployeeById();
+                break;
             case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
                 viewEmployeesByDepartment();
                 break;
@@ -132,14 +139,35 @@ function viewEmployees() {
     timerOuter();
 }
 
+function viewEmployeeById() {
+    prompt({
+        type: 'number',
+        name: 'employeeId',
+        message: "Please input the requested employee's ID.",
+        validate: employeeIdInput => {
+            if (employeeIdInput) {
+                return true;
+            } else {
+                console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                return false;
+            }
+        }
+    }).then(res => {
+        const employeeId = res.employeeId;
+        console.log('===============================================================================');
+        db.findEmployeeByID(employeeId);
+        timerOuter();
+    })
+}
+
 function viewEmployeesByDepartment() {
     prompt({
         type: 'list',
         name: 'department',
         message: 'Please choose a department to see employees from that department.',
         choices: ['Sales', 'Engineering', 'Finance', 'Legal']
-    }).then(result => {
-        const department = result.department;
+    }).then(res => {
+        const department = res.department;
         console.log('===============================================================================');
         db.findEmployeeByDepartment(department);
         timerOuter();
