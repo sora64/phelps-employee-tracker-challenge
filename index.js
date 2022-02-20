@@ -140,3 +140,15 @@ function viewEmployees() {
     db.findAllEmployees();
     // primaryPrompts();
 }
+
+function viewEmployeesByDepartment() {
+    prompt({
+        type: 'list',
+        name: 'department',
+        message: 'Please choose a department to see employees from that department.',
+        choices: ['Sales', 'Engineering', 'Finance', 'Legal']
+    }).then(result => {
+        const department = result.department;
+        db.findEmployeeByDepartment(department);
+    });
+}
