@@ -1,6 +1,7 @@
 const { prompt } = require('inquirer');
 const logo = require ('asciiart-logo');
 const db = require('./db');
+const inquirer = require('inquirer');
 require('console.table');
 
 init();
@@ -133,4 +134,9 @@ function primaryPrompts() {
                 break;
         }
     })
+}
+
+function viewEmployees() {
+    db.findAllEmployees();
+    // primaryPrompts();
 }
