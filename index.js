@@ -121,11 +121,15 @@ function primaryPrompts() {
     })
 }
 
+function timerOuter() {
+    let timeout;
+    function myTimeout() {timeout = setTimeout(primaryPrompts, 800);};
+    myTimeout();
+}
+
 function viewEmployees() {
     db.findAllEmployees();
-    let timeout;
-    function myTimeout() {timeout = setTimeout(primaryPrompts, 1000);};
-    myTimeout();
+    timerOuter();
 }
 
 function viewEmployeesByDepartment() {
@@ -138,9 +142,7 @@ function viewEmployeesByDepartment() {
         const department = result.department;
         console.log('===============================================================================');
         db.findEmployeeByDepartment(department);
-        let timeout;
-        function myTimeout() {timeout = setTimeout(primaryPrompts, 1000);};
-        myTimeout();
+        timerOuter();
     });
     return;
 }
@@ -228,9 +230,34 @@ function addEmployee() {
         console.log('Employee added!');
         console.log('=============================================================================');
         db.addNewEmployee(firstName, lastName, roleId, managerId);
-        let timeout;
-        function myTimeout() {timeout = setTimeout(primaryPrompts, 1000);};
-        myTimeout();
+        timerOuter();
+    });
+}
+
+function removeEmployee() {
+    db.findAllEmployees();
+    console.log('=============================================================================');
+    return prompt([
+        {
+            type: 'number',
+            name: 'removeEmployee',
+            message: "Please input the ID of the employee you would like to remove.",
+            validate: removeEmployeeInput => {
+                if (removeEmployeeInput) {
+                    return true;
+                } else {
+                    console.log('Invalid entry. To restart the application, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    return false;
+                }
+            }
+        }
+    ]).then(res => {
+        const removedEmployeeId = res.removeEmployee;
+        console.log('=============================================================================');
+        console.log('Employee removed!');
+        console.log('=============================================================================');        
+        db.deleteEmployeeRecord(removedEmployeeId);
+        timerOuter();
     });
 }
 
@@ -239,7 +266,7 @@ function quit() {
         {
             type: 'confirm',
             name: 'quitConfirm',
-            message: 'Are you sure you would like to quit the application?',
+            message: 'Would like to quit the application?',
             default: false
         }
     ).then(res => {
@@ -247,9 +274,7 @@ function quit() {
             process.exit();
         } else {
             console.log('Returning to main menu.');
-            let timeout;
-            function myTimeout() {timeout = setTimeout(primaryPrompts, 1000);};
-            myTimeout();
+            timerOuter();
         }
     });
 }

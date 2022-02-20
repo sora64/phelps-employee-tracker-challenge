@@ -5,7 +5,10 @@ class DB {
     findAllEmployees() {
         return connection.promise().query(
             'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
-        ).then(res => console.table(res[0]));
+        ).then(res => {
+            console.log('Employees:');
+            console.table(res[0]);
+        });
     }
 
     findEmployeeByDepartment(department) {
@@ -33,11 +36,19 @@ class DB {
 
     findAllManagers() {
         return connection.promise().query(
-            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE manager_id IS NULL'
+            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE manager_id IS NULL'
         ).then(res => {
             console.log('Managers:')
             console.table(res[0]);
         });
+    }
+
+    deleteEmployeeRecord(employeeId) {
+        return connection.promise().query(
+            'DELETE FROM employee WHERE id = ?', employeeId
+        ).then(res => connection.promise().query(
+            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
+        )).then(result => console.table(result[0]));
     }
 
     // findEmployeeByID(employeeId) {
