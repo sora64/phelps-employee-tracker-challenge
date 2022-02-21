@@ -395,6 +395,57 @@ function viewDepartments() {
     timerOuter();
 }
 
+function addDepartment() {
+    return prompt(
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Please input a name for the new department.',
+            validate: nameInput => {
+                if (nameInput) {
+                    return true;
+                } else {
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    return false;
+                }
+            }
+        }).then(res => {
+            const name = res.name;
+            console.log('=============================================================================');
+            console.log('Department added!');
+            console.log('=============================================================================');
+            db.addNewDepartment(name);
+            timerOuter();
+    });
+}
+
+function removeDepartment() {
+    db.findAllDepartments();
+    console.log('=============================================================================');
+    return prompt([
+        {
+            type: 'number',
+            name: 'removeDepartment',
+            message: "Please input the ID of the department you would like to remove.",
+            validate: removeDepartmentInput => {
+                if (removeDepartmentInput) {
+                    return true;
+                } else {
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    return false;
+                }
+            }
+        }
+    ]).then(res => {
+        const removedDepartmentId = res.removeDepartment;
+        console.log('=============================================================================');
+        console.log('Department removed!');
+        console.log('=============================================================================');
+        db.deleteDepartmentRecord(removedDepartmentId);
+        timerOuter();
+    });
+}
+
 function addRole() {
     return prompt([
         {
@@ -438,7 +489,6 @@ function addRole() {
             }
         }
     ]).then(res => {
-        // console.log(res);
         const title = res.title;
         const salary = res.salary;
         const departmentId = res.departmentId;

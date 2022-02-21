@@ -91,11 +91,27 @@ class DB {
         });
     }
 
+    addNewDepartment(name) {
+        return connection.promise().query(
+            'INSERT INTO department (name) VALUES (?)', name
+        ).then(res => connection.promise().query(
+            'SELECT id, name AS department FROM department'
+        )).then(result => console.table(result[0]));
+    }
+
+    deleteDepartmentRecord(departmentID) {
+        return connection.promise().query(
+            'DELETE FROM department WHERE id = ?', departmentID
+        ).then(res => connection.promise().query(
+            'SELECT id, name AS department FROM department'
+        )).then(result => console.table(result[0]));
+    }
+
     addNewRole(title, salary, departmentId) {
         return connection.promise().query(
             'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, departmentId]
         ).then(res => connection.promise().query(
-            'SELECT role.id, role.title AS role, salary, department_id AS department FROM role'
+            'SELECT id, title AS role, salary, department_id AS department FROM role'
         )).then(result => console.table(result[0]));
     }
 
