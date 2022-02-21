@@ -1,10 +1,13 @@
+// package imports
 const { prompt } = require('inquirer');
 const logo = require('asciiart-logo');
 const db = require('./db');
 require('console.table');
 
+// initializing function call
 init();
 
+// function that opens up the application
 function init() {
     const logoText = logo({ name: 'Employee Tracker', font: 'Rounded', logoColor: 'bold-green' }).render();
 
@@ -13,6 +16,7 @@ function init() {
     primaryPrompts();
 }
 
+// function that begins prompting the user, causing different functions to run based on user choice
 function primaryPrompts() {
     prompt([
         {
@@ -128,17 +132,20 @@ function primaryPrompts() {
     })
 }
 
+// timeout function to make prompts occur after console logs/tables
 function timerOuter() {
     let timeout;
     function myTimeout() { timeout = setTimeout(primaryPrompts, 800); };
     myTimeout();
 }
 
+// function to view all employees' data
 function viewEmployees() {
     db.findAllEmployees();
     timerOuter();
 }
 
+// function to view an employee's data based on their ID
 function viewEmployeeById() {
     prompt({
         type: 'number',
@@ -160,6 +167,7 @@ function viewEmployeeById() {
     })
 }
 
+// function to view the data of all employees in a certain department
 function viewEmployeesByDepartment() {
     prompt({
         type: 'list',
@@ -175,6 +183,7 @@ function viewEmployeesByDepartment() {
     return;
 }
 
+// function to add an employee to the database
 function addEmployee() {
     prompt([
         {
@@ -262,6 +271,7 @@ function addEmployee() {
     });
 }
 
+// function to remove an employee from the database
 function removeEmployee() {
     db.findAllEmployees();
     console.log('=============================================================================');
@@ -289,11 +299,13 @@ function removeEmployee() {
     });
 }
 
+// function to view all employment roles
 function viewRoles() {
     db.findAllRoles();
     timerOuter();
 }
 
+// function to change an employee's recorded role
 function updateEmployeeRole() {
     db.findAllEmployees();
     console.log('=============================================================================');
@@ -301,7 +313,7 @@ function updateEmployeeRole() {
     let timeout;
     function myTimeout() { timeout = setTimeout(updateEmployeeRolePrompts, 800); };
     myTimeout();
-
+    // function to prompt user about the changed employee role
     function updateEmployeeRolePrompts() {
         return prompt([
             {
@@ -342,6 +354,7 @@ function updateEmployeeRole() {
     }
 }
 
+// function to change an employee's recorded manager
 function updateEmployeeManager() {
     db.findAllEmployees();
     console.log('=============================================================================');
@@ -390,11 +403,13 @@ function updateEmployeeManager() {
     }
 }
 
+// function to view all departments in the company
 function viewDepartments() {
     db.findAllDepartments();
     timerOuter();
 }
 
+// function to add a new department
 function addDepartment() {
     return prompt(
         {
@@ -419,6 +434,7 @@ function addDepartment() {
     });
 }
 
+// function to remove a department
 function removeDepartment() {
     db.findAllDepartments();
     console.log('=============================================================================');
@@ -446,6 +462,7 @@ function removeDepartment() {
     });
 }
 
+// function to add a new employment role
 function addRole() {
     return prompt([
         {
@@ -500,6 +517,7 @@ function addRole() {
     });
 }
 
+// function to remove a role
 function removeRole() {
     db.findAllRoles();
     console.log('=============================================================================');
@@ -527,6 +545,7 @@ function removeRole() {
     });
 }
 
+// function to exit the application
 function quit() {
     return prompt(
         {

@@ -1,6 +1,7 @@
-const { last } = require('lodash');
+// import of the functionality in db/connection.js
 const connection = require('./connection');
 
+// class with functionality to be exported; said functionality queries MySQL to get, add, or remove data from the database "employees"
 class DB {
     findAllEmployees() {
         return connection.promise().query(
@@ -124,6 +125,8 @@ class DB {
     }
 }
 
+// new instance of the DB class to be exported
 const db = new DB;
 
+// exports functionality
 module.exports = db;
