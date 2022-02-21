@@ -33,6 +33,10 @@ function primaryPrompts() {
                     value: 'VIEW_EMPLOYEE_BY_ID'
                 },
                 {
+                    name: 'View All Employees By Manager',
+                    value: 'VIEW_EMPLOYEES_BY_MANAGER'
+                },
+                {
                     name: 'View All Employees By Department',
                     value: 'VIEW_EMPLOYEES_BY_DEPARTMENT'
                 },
@@ -91,6 +95,9 @@ function primaryPrompts() {
                 break;
             case 'VIEW_EMPLOYEE_BY_ID':
                 viewEmployeeById();
+                break;
+            case 'VIEW_EMPLOYEES_BY_MANAGER':
+                viewEmployeesByManager();
                 break;
             case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
                 viewEmployeesByDepartment();
@@ -169,18 +176,50 @@ function viewEmployeeById() {
 
 // function to view the data of all employees in a certain department
 function viewEmployeesByDepartment() {
+    db.findAllDepartments();
+    console.log('=============================================================================');
     prompt({
-        type: 'list',
-        name: 'department',
-        message: 'Please choose a department to see employees from that department.',
-        choices: ['Sales', 'Engineering', 'Finance', 'Legal']
+        type: 'input',
+        name: 'departmentId',
+        message: "Please input a department's ID to see employees from that department.",
+        validate: departmentIdInput => {
+            if (departmentIdInput) {
+                return true;
+            } else {
+                console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                return false;
+            }
+        }
     }).then(res => {
-        const department = res.department;
+        const departmentId = res.departmentId;
         console.log('===============================================================================');
-        db.findEmployeeByDepartment(department);
+        db.findEmployeeByDepartment(departmentId);
         timerOuter();
     });
-    return;
+}
+
+// function to view the data of all employees under a certain manger
+function viewEmployeesByManager() {
+    db.findAllManagers();
+    console.log('=============================================================================');
+    prompt({
+        type: 'input',
+        name: 'managerId',
+        message: "Please input a manager's ID to see their managed employees.",
+        validate: managerIdInput => {
+            if (managerIdInput) {
+                return true;
+            } else {
+                console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                return false;
+            }
+        }
+    }).then(res => {
+        const managerId = res.managerId;
+        console.log('===============================================================================');
+        db.findEmployeesByManager(managerId);
+        timerOuter();
+    });
 }
 
 // function to add an employee to the database
@@ -431,7 +470,7 @@ function addDepartment() {
             console.log('=============================================================================');
             db.addNewDepartment(name);
             timerOuter();
-    });
+        });
 }
 
 // function to remove a department

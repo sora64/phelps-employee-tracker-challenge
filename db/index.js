@@ -18,9 +18,15 @@ class DB {
         ).then(res => console.table(res[0]));
     }
 
-    findEmployeeByDepartment(department) {
+    findEmployeeByDepartment(departmentId) {
         return connection.promise().query(
-            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM department JOIN role ON department.id = role.department_id JOIN employee ON role.id = employee.role_id WHERE department.name = ?', department
+            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM department JOIN role ON department.id = role.department_id JOIN employee ON role.id = employee.role_id WHERE department.id = ?', departmentId
+        ).then(res => console.table(res[0]));
+    }
+
+    findEmployeesByManager(managerId) {
+        return connection.promise().query(
+            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM department JOIN role ON department.id = role.department_id JOIN employee ON role.id = employee.role_id WHERE manager_id = ?', managerId
         ).then(res => console.table(res[0]));
     }
 
