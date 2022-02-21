@@ -76,11 +76,19 @@ class DB {
     }
 
     updateManager(id, manager) {
-        return connection.promise().query(
-            'UPDATE employee SET manager_id = ? WHERE id = ?', [manager, id]
-        ).then(res => connection.promise().query(
-            'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
-        )).then(result => console.table(result[0]));
+        if (manager > 0) {
+            return connection.promise().query(
+                'UPDATE employee SET manager_id = ? WHERE id = ?', [manager, id]
+            ).then(res => connection.promise().query(
+                'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
+            )).then(result => console.table(result[0]));
+        } else {
+            return connection.promise().query(
+                'UPDATE employee SET manager_id = NULL WHERE id = ?', id            
+                ).then(res => connection.promise().query(
+                'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary AS salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id'
+            )).then(result => console.table(result[0]));
+        }
     }
 
     findAllDepartments() {

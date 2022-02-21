@@ -148,7 +148,7 @@ function viewEmployees() {
 // function to view an employee's data based on their ID
 function viewEmployeeById() {
     prompt({
-        type: 'number',
+        type: 'input',
         name: 'employeeId',
         message: "Please input the requested employee's ID.",
         validate: employeeIdInput => {
@@ -214,7 +214,7 @@ function addEmployee() {
             }
         },
         {
-            type: 'number',
+            type: 'input',
             name: 'role',
             message: "Please input your new employee's role ID.",
             validate: roleIdInput => {
@@ -234,7 +234,7 @@ function addEmployee() {
             default: true
         },
         {
-            type: 'number',
+            type: 'input',
             name: 'manager',
             message: "Please input your new employee's manager's ID.",
             validate: managerIdInput => {
@@ -277,7 +277,7 @@ function removeEmployee() {
     console.log('=============================================================================');
     return prompt([
         {
-            type: 'number',
+            type: 'input',
             name: 'removeEmployee',
             message: "Please input the ID of the employee you would like to remove.",
             validate: removeEmployeeInput => {
@@ -317,7 +317,7 @@ function updateEmployeeRole() {
     function updateEmployeeRolePrompts() {
         return prompt([
             {
-                type: 'number',
+                type: 'input',
                 name: 'updatedEmployeeId',
                 message: "Please input the ID of the employee whose role you wish to update.",
                 validate: updatedEmployeeIdInput => {
@@ -330,7 +330,7 @@ function updateEmployeeRole() {
                 }
             },
             {
-                type: 'number',
+                type: 'input',
                 name: 'updatedEmployeeRole',
                 message: "Please input the ID of the new role for the selected employee.",
                 validate: updatedEmployeeIdInput => {
@@ -366,7 +366,7 @@ function updateEmployeeManager() {
     function updateEmployeeManagerPrompts() {
         return prompt([
             {
-                type: 'number',
+                type: 'input',
                 name: 'updatedEmployeeId',
                 message: "Please input the ID of the employee whose manager you'd like to update.",
                 validate: updatedEmployeeIdInput => {
@@ -379,9 +379,9 @@ function updateEmployeeManager() {
                 }
             },
             {
-                type: 'number',
+                type: 'input',
                 name: 'updatedEmployeeManager',
-                message: "Please input the ID of the new manager for the selected employee.",
+                message: "Please input the ID of the new manager for the selected employee. Input '0' if there is no manager.",
                 validate: updatedEmployeeIdInput => {
                     if (updatedEmployeeIdInput) {
                         return true;
@@ -440,7 +440,7 @@ function removeDepartment() {
     console.log('=============================================================================');
     return prompt([
         {
-            type: 'number',
+            type: 'input',
             name: 'removeDepartment',
             message: "Please input the ID of the department you would like to remove.",
             validate: removeDepartmentInput => {
@@ -479,7 +479,7 @@ function addRole() {
             }
         },
         {
-            type: 'number',
+            type: 'input',
             name: 'salary',
             message: 'Please input a salary amount for the new role.',
             validate: salaryInput => {
@@ -493,7 +493,7 @@ function addRole() {
             }
         },
         {
-            type: 'number',
+            type: 'input',
             name: 'departmentId',
             message: 'Please enter a department ID for the new role.',
             validate: departmentInput => {
