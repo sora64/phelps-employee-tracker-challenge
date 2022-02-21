@@ -1,5 +1,5 @@
 const { prompt } = require('inquirer');
-const logo = require ('asciiart-logo');
+const logo = require('asciiart-logo');
 const db = require('./db');
 require('console.table');
 
@@ -49,18 +49,6 @@ function primaryPrompts() {
                     value: 'UPDATE_EMPLOYEE_MANAGER'
                 },
                 {
-                    name: 'View All Roles',
-                    value: 'VIEW_ROLES'
-                },
-                {
-                    name: 'Add Role',
-                    value: 'ADD_ROLE'
-                },
-                {
-                    name: 'Remove Role',
-                    value: 'REMOVE_ROLE'
-                },
-                {
                     name: 'View All Departments',
                     value: 'VIEW_DEPARTMENTS'
                 },
@@ -73,9 +61,21 @@ function primaryPrompts() {
                     value: 'REMOVE_DEPARTMENT'
                 },
                 {
+                    name: 'View All Roles',
+                    value: 'VIEW_ROLES'
+                },
+                {
+                    name: 'Add Role',
+                    value: 'ADD_ROLE'
+                },
+                {
+                    name: 'Remove Role',
+                    value: 'REMOVE_ROLE'
+                },
+                {
                     name: 'Quit',
                     value: 'QUIT'
-                }                
+                }
             ]
         }
     ]).then(res => {
@@ -85,7 +85,7 @@ function primaryPrompts() {
             case 'VIEW_EMPLOYEES':
                 viewEmployees();
                 break;
-            case 'VIEW_EMPLOYEE_BY_ID': 
+            case 'VIEW_EMPLOYEE_BY_ID':
                 viewEmployeeById();
                 break;
             case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
@@ -103,15 +103,6 @@ function primaryPrompts() {
             case 'UPDATE_EMPLOYEE_MANAGER':
                 updateEmployeeManager();
                 break;
-            case 'VIEW_ROLES':
-                viewRoles();
-                break;
-            case 'ADD_ROLE':
-                addRole();
-                break;
-            case 'REMOVE_ROLE':
-                removeRole();
-                break;
             case 'VIEW_DEPARTMENTS':
                 viewDepartments();
                 break;
@@ -120,6 +111,15 @@ function primaryPrompts() {
                 break;
             case 'REMOVE_DEPARTMENT':
                 removeDepartment();
+                break;
+            case 'VIEW_ROLES':
+                viewRoles();
+                break;
+            case 'ADD_ROLE':
+                addRole();
+                break;
+            case 'REMOVE_ROLE':
+                removeRole();
                 break;
             case 'QUIT':
                 quit();
@@ -130,7 +130,7 @@ function primaryPrompts() {
 
 function timerOuter() {
     let timeout;
-    function myTimeout() {timeout = setTimeout(primaryPrompts, 800);};
+    function myTimeout() { timeout = setTimeout(primaryPrompts, 800); };
     myTimeout();
 }
 
@@ -236,7 +236,7 @@ function addEmployee() {
                     return false;
                 }
             },
-            when: ({confirmManager}) => {
+            when: ({ confirmManager }) => {
                 if (confirmManager) {
                     return true;
                 } else {
@@ -283,7 +283,7 @@ function removeEmployee() {
         const removedEmployeeId = res.removeEmployee;
         console.log('=============================================================================');
         console.log('Employee removed!');
-        console.log('=============================================================================');        
+        console.log('=============================================================================');
         db.deleteEmployeeRecord(removedEmployeeId);
         timerOuter();
     });
@@ -299,7 +299,7 @@ function updateEmployeeRole() {
     console.log('=============================================================================');
     db.findAllRoles();
     let timeout;
-    function myTimeout() {timeout = setTimeout(updateEmployeeRolePrompts, 800);};
+    function myTimeout() { timeout = setTimeout(updateEmployeeRolePrompts, 800); };
     myTimeout();
 
     function updateEmployeeRolePrompts() {
@@ -335,7 +335,7 @@ function updateEmployeeRole() {
             const employeeRole = res.updatedEmployeeRole;
             console.log('=============================================================================');
             console.log('Employee role updated!');
-            console.log('============================================================================='); 
+            console.log('=============================================================================');
             db.updateRoles(employeeId, employeeRole);
             timerOuter();
         });
@@ -347,7 +347,7 @@ function updateEmployeeManager() {
     console.log('=============================================================================');
     db.findAllManagers();
     let timeout;
-    function myTimeout() {timeout = setTimeout(updateEmployeeManagerPrompts, 800);};
+    function myTimeout() { timeout = setTimeout(updateEmployeeManagerPrompts, 800); };
     myTimeout();
 
     function updateEmployeeManagerPrompts() {
@@ -383,7 +383,7 @@ function updateEmployeeManager() {
             const employeeManager = res.updatedEmployeeManager;
             console.log('=============================================================================');
             console.log('Employee manager updated!');
-            console.log('============================================================================='); 
+            console.log('=============================================================================');
             db.updateManager(employeeId, employeeManager);
             timerOuter();
         });
@@ -393,6 +393,88 @@ function updateEmployeeManager() {
 function viewDepartments() {
     db.findAllDepartments();
     timerOuter();
+}
+
+function addRole() {
+    return prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Please input a title for the new role.',
+            validate: titleInput => {
+                if (titleInput) {
+                    return true;
+                } else {
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'number',
+            name: 'salary',
+            message: 'Please input a salary amount for the new role.',
+            validate: salaryInput => {
+                if (salaryInput) {
+                    db.findAllDepartments();
+                    return true;
+                } else {
+                    console.log('Please enter a salary amount!');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'number',
+            name: 'departmentId',
+            message: 'Please enter a department ID for the new role.',
+            validate: departmentInput => {
+                if (departmentInput) {
+                    return true;
+                } else {
+                    console.log('Please enter a department ID!');
+                    return false;
+                }
+            }
+        }
+    ]).then(res => {
+        // console.log(res);
+        const title = res.title;
+        const salary = res.salary;
+        const departmentId = res.departmentId;
+        console.log('=============================================================================');
+        console.log('Role added!');
+        console.log('=============================================================================');
+        db.addNewRole(title, salary, departmentId);
+        timerOuter();
+    });
+}
+
+function removeRole() {
+    db.findAllRoles();
+    console.log('=============================================================================');
+    return prompt([
+        {
+            type: 'number',
+            name: 'removeRole',
+            message: "Please input the ID of the role you would like to remove.",
+            validate: removeRoleInput => {
+                if (removeRoleInput) {
+                    return true;
+                } else {
+                    console.log('Invalid entry. To restart the application and return to the main menu, press Ctrl+C on your keyboard to exit the application, then input "node index" into the terminal.');
+                    return false;
+                }
+            }
+        }
+    ]).then(res => {
+        const removedRoleId = res.removeRole;
+        console.log('=============================================================================');
+        console.log('Role removed!');
+        console.log('=============================================================================');
+        db.deleteRoleRecord(removedRoleId);
+        timerOuter();
+    });
 }
 
 function quit() {

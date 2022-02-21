@@ -60,7 +60,10 @@ class DB {
     findAllRoles() {
         return connection.promise().query(
             'SELECT id, title AS role FROM role'
-        ).then(res => console.table(res[0]));
+        ).then(res => {
+            console.log('Roles:')
+            console.table(res[0]);
+        });
     }
 
     updateRoles(id, role) {
@@ -86,6 +89,22 @@ class DB {
             console.log('Departments:')
             console.table(res[0]);
         });
+    }
+
+    addNewRole(title, salary, departmentId) {
+        return connection.promise().query(
+            'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, departmentId]
+        ).then(res => connection.promise().query(
+            'SELECT role.id, role.title AS role, salary, department_id AS department FROM role'
+        )).then(result => console.table(result[0]));
+    }
+
+    deleteRoleRecord(roleId) {
+        return connection.promise().query(
+            'DELETE FROM role WHERE id = ?', roleId
+        ).then(res => connection.promise().query(
+            'SELECT role.id, role.title AS role, salary, department_id AS department FROM role'
+        )).then(result => console.table(result[0]));
     }
 }
 
