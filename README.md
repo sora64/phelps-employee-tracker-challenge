@@ -10,6 +10,7 @@
 
   - [Installation](#installation)
   - [Usage](#usage)
+  - [Demonstration](#demonstration)
   - [Screenshot](#screenshot)
   - [Questions](#questions)
   
@@ -21,12 +22,14 @@
   ## Usage
 
   Select from the opening prompts on the main menu, then answer the queries to view, add, or remove data related to a company's departments, roles, and/or employees. Select the "Quit" option on the main menu to exit the application.
-  
+
+  ## Demonstration
+
+  [Video demonstration of the application](https://drive.google.com/file/d/1-5f5dwUV9d5rfRzmQq8zg9UXnsrnVkMj/view)
   
   ## Screenshot   
   
-  ![Screnshot of a the application's logo](./employeeTrackerScreenshot.png)
-
+  ![Screnshot of the application's logo](./employeeTrackerScreenshot.png)
 
   ## Questions
 
